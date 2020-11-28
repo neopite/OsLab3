@@ -49,11 +49,10 @@ public class Process {
 
     @Override
     public String toString() {
-        return "Process{" +
-                "id=" + id +
-                ", execTime=" + execTime +
-                ", waitTime=" + waitTime +
-                '}';
+        return
+                "ID : " + id +
+                "  EXEC TIME : " + execTime +
+                "  WAITING : " + waitTime;
     }
 
     @Override

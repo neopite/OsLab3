@@ -1,18 +1,26 @@
 package com.company.neophite;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class Sceduler {
 
     private List<Process> listOfProcess;
-    private HashMap<Integer, Integer> mapOfFirstIndexed;
+    private static final int MAX_EXECUTION_TIME = 1000;
+    private static final int COUNT_OF_PROCCESES = 64;
 
-    public Sceduler() {
+    public Sceduler(int countOfProcceses) {
         listOfProcess = new ArrayList<>();
-        mapOfFirstIndexed = new HashMap<>();
+        generateListOfProcceses(countOfProcceses);
+    }
+
+    public void generateListOfProcceses(int countOfProcceses){
+        for (int itter = 0; itter < countOfProcceses; itter++) {
+            Process process = new Process(itter,(int)(Math.random()*MAX_EXECUTION_TIME));
+            this.addProcessToSceduler(process);
+        }
     }
 
     public void addProcessToSceduler(Process process) {
@@ -22,12 +30,26 @@ public class Sceduler {
             int firstInOfValue = getIndexOfTheNextGreaterNumber(process);
             if (firstInOfValue == -1) {
                 listOfProcess.add(process);
+                firstInOfValue = listOfProcess.size() - 1;
             } else {
                 if (firstInOfValue == 0) {
                     listOfProcess.add(0, process);
                 } else {
+
                     listOfProcess.add(firstInOfValue, process);
                 }
+            }
+            updateTimeWaiting(firstInOfValue);
+        }
+    }
+
+    public void updateTimeWaiting(int indexOfBegin){
+        for (int itter = indexOfBegin; itter < listOfProcess.size(); itter++) {
+            if(indexOfBegin == 0){
+                listOfProcess.get(itter).setWaitTime(0);
+            }else {
+                Process prevProcces = listOfProcess.get(itter - 1);
+                listOfProcess.get(itter).setWaitTime(prevProcces.getWaitTime() + prevProcces.getExecTime());
             }
         }
     }
@@ -41,6 +63,10 @@ public class Sceduler {
         return pr.isPresent() ? listOfProcess.indexOf(pr.get()) : -1;
     }
 
+    public double avgTimeOfWaitingPerProcces(){
+        double num = listOfProcess.stream().mapToDouble(x -> x.getWaitTime()).reduce(0 , Double::sum);
+        return num / listOfProcess.size();
+    }
 
     public List<Process> getListOfProcess() {
         return listOfProcess;
@@ -50,25 +76,12 @@ public class Sceduler {
         for (Process process : this.listOfProcess) {
             System.out.println(process.toString());
         }
+        System.out.println("AVG time for waiting procceses : " + avgTimeOfWaitingPerProcces() );
     }
 
 
     public static void main(String[] args) {
-        Sceduler sceduler = new Sceduler();
-        Process process = new Process(1, 43);
-        Process process1 = new Process(2, 94);
-        Process process5 = new Process(3, 7);
-        Process process6 = new Process(4, 64);
-        Process process2 = new Process(3, 2);
-        Process process3 = new Process(4, 3);
-        sceduler.addProcessToSceduler(process);
-        sceduler.addProcessToSceduler(process5);
-        sceduler.addProcessToSceduler(process6);
-        sceduler.addProcessToSceduler(process2);
-        sceduler.addProcessToSceduler(process1);
-        sceduler.addProcessToSceduler(process3);
+        Sceduler sceduler = new Sceduler(10);
         sceduler.printSceduler();
-
     }
-
 }
