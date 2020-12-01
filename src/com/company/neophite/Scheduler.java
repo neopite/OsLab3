@@ -3,22 +3,21 @@ package com.company.neophite;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
-public class Sceduler {
+public class Scheduler {
 
     private List<Process> listOfProcess;
-    private static final int MAX_EXECUTION_TIME = 1000;
+    private static final int MAX_EXECUTION_TIME_IN_MIL = 2000;
     private static final int COUNT_OF_PROCCESES = 64;
 
-    public Sceduler(int countOfProcceses) {
+    public Scheduler(int countOfProcceses) {
         listOfProcess = new ArrayList<>();
         generateListOfProcceses(countOfProcceses);
     }
 
     public void generateListOfProcceses(int countOfProcceses){
         for (int itter = 0; itter < countOfProcceses; itter++) {
-            Process process = new Process(itter,(int)(Math.random()*MAX_EXECUTION_TIME));
+            Process process = new Process(itter,(int)(Math.random()* MAX_EXECUTION_TIME_IN_MIL));
             this.addProcessToSceduler(process);
         }
     }
@@ -45,7 +44,7 @@ public class Sceduler {
 
     public void updateTimeWaiting(int indexOfBegin){
         for (int itter = indexOfBegin; itter < listOfProcess.size(); itter++) {
-            if(indexOfBegin == 0){
+            if(itter == 0){
                 listOfProcess.get(itter).setWaitTime(0);
             }else {
                 Process prevProcces = listOfProcess.get(itter - 1);
@@ -72,16 +71,31 @@ public class Sceduler {
         return listOfProcess;
     }
 
-    public void printSceduler() {
+    public void printQueue() {
         for (Process process : this.listOfProcess) {
             System.out.println(process.toString());
         }
         System.out.println("AVG time for waiting procceses : " + avgTimeOfWaitingPerProcces() );
     }
 
+    public void procces(){
+        for (int itter = 0; itter < listOfProcess.size(); itter++) {
+            System.out.println("Procces : " + listOfProcess.get(itter).getId() + " started");
+            System.out.println("Procces Execution");
+            try {
+                Thread.sleep(listOfProcess.get(itter).getExecTime());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Procces : " + listOfProcess.get(itter).getId() +" is done");
+            System.out.println("---------------------------------------------");
+        }
+    }
+
 
     public static void main(String[] args) {
-        Sceduler sceduler = new Sceduler(10);
-        sceduler.printSceduler();
+        Scheduler sceduler = new Scheduler(10);
+        sceduler.procces();
+        sceduler.printQueue();
     }
 }
