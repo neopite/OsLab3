@@ -18,19 +18,19 @@ Also i override the methods `equals` and `hashCode` for the futher usage of this
 
 `public void addProcessToSceduler(Process process)` - put process into the queue according to the algorithm. <br/>
 `public void generateListOfProcceses(int countOfProcceses)` - generate processes by the number in the argument. <br/>
-`public void updateTimeWaiting(int indexOfBegin)` - update time waiting for the processes every time when we added new one to the queue.
-`avgTimeOfWaitingPerProcces()` - calculate the average time of waiting for every procces.
+`public void updateTimeWaiting(int indexOfBegin)` - update time waiting for the processes every time when we added new one to the queue. <br/>
+`avgTimeOfWaitingPerProcces()` - calculate the average time of waiting for every process.
 
 ## Usage
-Firstly i will create the instance of the Scheduler
-`Scheduler sceduler = new Scheduler(10);`
+Firstly i will create the instance of the Scheduler <br/>
+`Scheduler sceduler = new Scheduler(10);` <br/>
 Now i will print out the queue of the processes
 
-Process flow ![alt text](src/img/first.jpg) 
+![alt text](src/img/first.jpg) 
 
 And the piece of log 
 
-  ![alt text](src/img/second.jpg) 
+![alt text](src/img/second.jpg) 
 
 
 
