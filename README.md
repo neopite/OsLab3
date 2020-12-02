@@ -1,4 +1,4 @@
-# Procces Manager Shortest Job First (SJF)
+# Process Manager Shortest Job First (SJF)
 This is a Java implementation of **Process Manager Simulator**. <br/>
 **SJF - Shortest Job First** One of the methods of solving the "convoy effect" is
 a strategy that allows the queue to be executed first.
